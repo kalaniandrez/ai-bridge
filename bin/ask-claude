@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# ask-claude "prompt": consult Claude headlessly (Claude Code CLI).
+# For Codex/Gemini sessions that want Claude's take. Read-only by default.
+# Pipe extra context via stdin:  cat file.md | ask-claude "review this"
+set -euo pipefail
+
+BRIDGE="${AI_BRIDGE_LOG:-$HOME/ai-bridge/log}"
+mkdir -p "$BRIDGE"
+
+if [[ $# -lt 1 ]]; then
+  echo 'Usage: ask-claude "prompt" [< context.md]' >&2
+  exit 1
+fi
+
+PROMPT="$*"
+TS="$(date +%Y%m%d-%H%M%S)"
+OUT="$BRIDGE/$TS-claude.md"
+
+printf '# claude %s\n\n## prompt\n%s\n\n## reply\n' "$TS" "$PROMPT" > "$OUT"
+claude -p "$PROMPT" | tee -a "$OUT"
