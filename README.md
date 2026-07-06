@@ -1,38 +1,53 @@
 # ai-bridge
 
-Three tiny shell scripts that let Claude, OpenAI Codex, and Google Gemini consult each other headlessly from any terminal, using the CLI subscriptions you already pay for. No API keys, no copy-paste between chat windows.
+**Claude, Codex, and Gemini consulting each other from your terminal. No API keys, just the CLI logins you already pay for.**
 
-```bash
-ask-claude "is this schema design sane?" < schema.sql
-ask-codex  "review this diff for bugs"   < changes.diff
-ask-gemini "summarize this doc in 5 bullets" < notes.md
-```
+![ai-bridge demo](demo.svg)
+
+Three tiny shell scripts. One verb per model, one shared log. Get a second (and third) opinion, or let one model review another's work, without leaving the terminal or wiring up a single API key.
 
 ## Why
 
-If you run more than one AI subscription, the second opinion is one pipe away. The killer use case: an agent session in one model calling another model for a cross-check. Claude Code can run `ask-codex` mid-task, Codex can run `ask-claude`, and every exchange is logged.
+You already pay for Claude, Codex, and Gemini. When they disagree, that disagreement is useful: it turns "which one is right?" into a panel instead of a guess. ai-bridge makes that a one-liner, and lets agents consult each other mid-task (Claude Code kicking off a Codex review with no human in the loop).
 
-## What each script does
+## The three verbs
 
-- `ask-claude`: calls `claude -p` (Claude Code CLI, headless print mode)
-- `ask-codex`: calls `codex exec` in a read-only sandbox (override with `ASK_CODEX_SANDBOX=workspace-write`)
-- `ask-gemini`: calls `gemini -p` (Gemini CLI)
+| Command | What it runs |
+|---|---|
+| `ask-claude "..."` | Claude Code CLI in print mode |
+| `ask-codex "..."` | Codex in a read-only sandbox (no repo writes) |
+| `ask-gemini "..."` | Gemini CLI in print mode |
 
-Every call writes a timestamped markdown log (prompt + reply) to `~/ai-bridge/log/` (override with `AI_BRIDGE_LOG=/path`), so cross-model consultations leave a paper trail you can grep later.
+Every call is written to a timestamped markdown log in `~/ai-bridge/log/`, so the whole cross-model conversation stays searchable and auditable.
 
 ## Install
 
-You need the underlying CLIs installed and authenticated first ([Claude Code](https://claude.com/claude-code), [Codex CLI](https://github.com/openai/codex), [Gemini CLI](https://github.com/google-gemini/gemini-cli)). Then:
+Install and authenticate the three CLIs first (Claude Code, Codex CLI, Gemini CLI), then:
 
 ```bash
-git clone https://github.com/kalaniandrez/ai-bridge && cd ai-bridge
+git clone https://github.com/kalaniandrez/ai-bridge
+cd ai-bridge
 chmod +x bin/*
 ln -s "$PWD"/bin/* /usr/local/bin/
 ```
 
-## Notes
+## Use
 
-- Read-only by default everywhere it matters: `ask-codex` runs sandboxed, and nothing here grants write access to your repo.
-- These are deliberately tiny. The value is the convention (one verb per model + a shared log), not the code.
+```bash
+# one model
+ask-claude "explain this stack trace"
 
-MIT · Built by [Kalani André](https://kalani.place)
+# hand one model's answer to another for review
+ask-codex "sanity-check this: $(ask-claude 'summarize the risks in auth.ts')"
+
+# break a tie
+ask-gemini "which approach is safer for a bank app?"
+```
+
+## Design
+
+Deliberately tiny. The value is the convention (one verb per model + a shared log), not the code. Security-conscious defaults: Codex runs sandboxed, no repo writes by default.
+
+## License
+
+MIT © Kalani André · Built in Puerto Rico · [kalani.place](https://kalani.place)

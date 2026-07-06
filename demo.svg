@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="340" viewBox="0 0 860 340" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace">
+  <rect x="0.5" y="0.5" width="859" height="339" rx="10" fill="#0d1117" stroke="#30363d"/>
+  <rect x="0.5" y="0.5" width="859" height="40" rx="10" fill="#161b22"/>
+  <rect x="0.5" y="30" width="859" height="11" fill="#161b22"/>
+  <circle cx="24" cy="20" r="6" fill="#ff5f56"/>
+  <circle cx="44" cy="20" r="6" fill="#ffbd2e"/>
+  <circle cx="64" cy="20" r="6" fill="#27c93f"/>
+  <text x="430" y="25" text-anchor="middle" fill="#8b949e" font-size="13">ai-bridge — three models, one terminal</text>
+  <g font-size="14.5">
+    <text x="24" y="76"><tspan fill="#ff2d88">$ </tspan><tspan fill="#e6edf3">ask-claude </tspan><tspan fill="#a5d6ff">"review the JWT auth in auth.ts"</tspan></text>
+    <text x="24" y="102"><tspan fill="#d98a5b">[claude] </tspan><tspan fill="#c9d1d9">token in localStorage is XSS-exposed. move it to an httpOnly cookie.</tspan></text>
+    <text x="24" y="138"><tspan fill="#ff2d88">$ </tspan><tspan fill="#e6edf3">ask-codex </tspan><tspan fill="#a5d6ff">"sanity-check the take above"</tspan></text>
+    <text x="24" y="164"><tspan fill="#3fb950">[codex]&#160;&#160;</tspan><tspan fill="#c9d1d9">agreed. also the JWT has no exp claim, add one before shipping.</tspan></text>
+    <text x="24" y="200"><tspan fill="#ff2d88">$ </tspan><tspan fill="#e6edf3">ask-gemini </tspan><tspan fill="#a5d6ff">"which is safer for a bank app?"</tspan></text>
+    <text x="24" y="226"><tspan fill="#58a6ff">[gemini] </tspan><tspan fill="#c9d1d9">cookie + short exp. codex is right on both counts.</tspan></text>
+    <text x="24" y="266"><tspan fill="#8b949e"># no API keys. rides your existing CLI logins.</tspan></text>
+    <text x="24" y="290"><tspan fill="#8b949e"># every consult logged to </tspan><tspan fill="#6e7681">~/ai-bridge/log/</tspan><tspan fill="#3fb950">  &#10003;</tspan></text>
+    <text x="24" y="316"><tspan fill="#ff2d88">$ </tspan><tspan fill="#e6edf3">_</tspan></text>
+  </g>
+</svg>
